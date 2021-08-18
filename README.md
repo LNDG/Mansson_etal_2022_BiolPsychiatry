@@ -1,1 +1,1 @@
-# M-nsson_etal_2021_BiologicalPsychiatry
+# Mansson_etal_2021_BiologicalPsychiatry
