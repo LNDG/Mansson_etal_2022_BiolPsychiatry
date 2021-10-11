@@ -1,0 +1,42 @@
+Variables including brain data
+
+#	Session	BOLD	Condition	Duration 	Variable 	Reliability-based 
+					(seconds)	name		cross-validated
+1	1	MEAN 	Task (Faces) 	160		condition_1
+2	1	MEAN 	Task (Faces) 	80		condition_2
+3	1	MEAN 	Task (Faces) 	40		condition_3
+15	1	SD	Task (Faces) 	160		condition_15
+16	1	SD	Task (Faces) 	80		condition_16
+17	1	SD	Task (Faces) 	40		condition_17
+18	1	SD	Resting-state 	340		condition_18
+19	1	SD	Resting-state 	160		condition_19
+20	1	SD	Resting-state 	80		condition_20
+21	1	SD	Resting-state 	40		condition_21
+
+8	2	MEAN	Task (Faces) 	160		condition_8	pred_brain8
+9	2	MEAN	Task (Faces)	80		condition_9	pred_brain9
+10	2	MEAN	Task (Faces)	40		condition_10	pred_brain10
+22	2	SD	Task (Faces) 	160		condition_22	pred_brain22
+23	2	SD	Task (Faces)	80		condition_23	pred_brain23
+24	2	SD	Task (Faces)	40		condition_24	pred_brain24
+25	2	SD	Resting-state 	340		condition_25	pred_brain25
+26	2	SD	Resting-state	160		condition_26	pred_brain26
+27	2	SD	Resting-state	80		condition_27	pred_brain27
+28	2	SD	Resting-state	40		condition_28	pred_brain28
+
+
+
+Variables based on behavioural data
+
+Variable name		Description
+pred_baseline		Prediction based on LSAS-SR at Baseline 2
+
+Primary outcomes
+lsas_del_post_b1		LSAS-SR Delta score (Post-treatment - Baseline 1)
+lsas_del_post_b2		LSAS-SR Delta score (Post-treatment - Baseline 2)
+
+Secondary outcomes
+sps_delta_post_b1	SPS Delta score (Post-treatment - Baseline 1)
+sias_delta_post_b1	SIAS Delta score (Post-treatment - Baseline 1)
+spsq_delta_post_b1	SPSQ (Post-treatment - Baseline 1)
+cgii18			CGI-I at Post-treatment
