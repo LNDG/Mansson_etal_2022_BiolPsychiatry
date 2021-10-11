@@ -1,0 +1,524 @@
+*RESULTS
+**Treatment outcomes
+
+reshape long lsassr sias sps spsq_sum, i(id) j(time)
+xtset id time
+
+*******************
+***PRIMARY OUTCOME: LSAS-SR
+*******************
+xtgee lsassr i.time, vce(bootstrap, reps(1000))
+
+/*
+GEE population-averaged model                   Number of obs     =        180
+Group variable:                         id      Number of groups  =         45
+Link:                             identity      Obs per group:
+Family:                           Gaussian                    min =          4
+Correlation:                  exchangeable                    avg =        4.0
+                                                              max =          4
+                                                Wald chi2(3)      =     134.92
+Scale parameter:                  405.2183      Prob > chi2       =     0.0000
+
+                                     (Replications based on 45 clusters in id)
+------------------------------------------------------------------------------
+             |   Observed   Bootstrap                         Normal-based
+      lsassr |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+        time |
+          1  |  -1.555556   1.382966    -1.12   0.261    -4.266119    1.155008
+          9  |  -3.955556   1.884664    -2.10   0.036     -7.64943   -.2616816
+         18  |      -33.8   3.122186   -10.83   0.000    -39.91937   -27.68063
+             |
+       _cons |   77.28889   2.595927    29.77   0.000     72.20097    82.37681
+------------------------------------------------------------------------------
+*/
+
+margins time
+
+/*
+Adjusted predictions                            Number of obs     =        180
+Model VCE    : Bootstrap
+
+Expression   : Linear prediction, predict()
+
+------------------------------------------------------------------------------
+             |            Delta-method
+             |     Margin   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+        time |
+          0  |   77.28889   2.595927    29.77   0.000     72.20097    82.37681
+          1  |   75.73333   2.655476    28.52   0.000      70.5287    80.93797
+          9  |   73.33333   2.954904    24.82   0.000     67.54183    79.12484
+         18  |   43.48889   3.253407    13.37   0.000     37.11233    49.86545
+------------------------------------------------------------------------------
+*/
+
+permute lsassr _b, verbose nodots reps(1000): xtgee lsassr i.time
+
+/*
+Monte Carlo permutation results                 Number of obs     =        180
+
+      command:  xtgee lsassr i.time
+      0b.time:  _b[0b.time]
+       1.time:  _b[1.time]
+       9.time:  _b[9.time]
+      18.time:  _b[18.time]
+        _cons:  _b[_cons]
+  permute var:  lsassr
+
+------------------------------------------------------------------------------
+T            |     T(obs)       c       n   p=c/n   SE(p) [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+        time |
+          0  |  (empty)                                             
+          1  |  -1.555556     768    1000  0.7680  0.0133  .7405702   .7938419
+          9  |  -3.955555     464    1000  0.4640  0.0158  .4327357   .4954769
+         18  |      -33.8       0    1000  0.0000  0.0000         0   .0036821
+             |
+       _cons |   77.28889       1    1000  0.0010  0.0010  .0000253   .0055589
+------------------------------------------------------------------------------
+Note: Confidence intervals are with respect to p=c/n.
+Note: c = #{|T| >= |T(obs)|}
+*/
+
+*********************
+***SECONDARY OUTCOME: CGI-I
+*********************
+
+tab cgii18
+
+     cgii18 |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          1 |         10       22.22       22.22
+          2 |         22       48.89       71.11
+          3 |          9       20.00       91.11
+          4 |          3        6.67       97.78
+          5 |          1        2.22      100.00
+------------+-----------------------------------
+      Total |         45      100.00
+
+
+
+**Task-related brain signal variability strongly predicts treatment outcome
+See "reliability_prediction/Soc_Anx_PLSbased_pred_crossval.m"
+
+
+**Gauging the relative predictive utility of task-based BOLD variability
+
+Results from models mentioned below, see See "reliability_prediction/Soc_Anx_PLSbased_pred_crossval.m"
+
+*************************
+***UNIVARIATE REGRESSION: Baseline self-reports: a) LSAS-SR, b) MADRS-S, c) ISI
+*************************
+
+*************************
+***UNIVARIATE REGRESSION: Task SD-BOLD, a) 160 sec b) 80 sec, c) 40 sec
+*************************
+
+*************************
+***UNIVARIATE REGRESSION: Resting-state SD-BOLD, a) 340 sec, b) 160 sec c) 80 sec, d) 40 sec
+*************************
+
+*************************
+***UNIVARIATE REGRESSION: Task MEAN-BOLD, a) 160 sec b) 80 sec, c) 40 sec
+*************************
+
+***********************************
+***MULTIPLE SIGNIFICANT PREDICTORS: a) Self-reported LSAS-SR, Task SD-BOLD 160 sec, Resting-state SD-BOLD 160 sec, b) Self-reported LSAS-SR, Task SD-BOLD 160 sec, Resting-state SD-BOLD 340 sec
+***********************************
+
+
+********************************
+***PRINCIPAL COMPONENT ANALYSIS: SPS, SIAS, SPSQ, CGI-I
+********************************
+
+pca sps_delta_post_b1 sias_delta_post_b1 spsq_delta_post_b1 cgii18
+predict pc1, score
+
+/*
+Principal components/correlation                 Number of obs    =         45
+                                                 Number of comp.  =          4
+                                                 Trace            =          4
+    Rotation: (unrotated = principal)            Rho              =     1.0000
+
+    --------------------------------------------------------------------------
+       Component |   Eigenvalue   Difference         Proportion   Cumulative
+    -------------+------------------------------------------------------------
+           Comp1 |      2.79686      2.19052             0.6992       0.6992
+           Comp2 |      .606339      .258075             0.1516       0.8508
+           Comp3 |      .348264     .0997293             0.0871       0.9379
+           Comp4 |      .248535            .             0.0621       1.0000
+    --------------------------------------------------------------------------
+
+Principal components (eigenvectors) 
+    --------------------------------------------------------------------
+        Variable |    Comp1     Comp2     Comp3     Comp4 | Unexplained 
+    -------------+----------------------------------------+-------------
+    sps_delta_~1 |   0.5250   -0.3482   -0.2415    0.7381 |           0 
+    sias_delta~1 |   0.4992   -0.4612    0.6368   -0.3642 |           0 
+    spsq_delta~1 |   0.5263    0.0994   -0.6494   -0.5398 |           0 
+          cgii18 |   0.4453    0.8100    0.3384    0.1762 |           0 
+    --------------------------------------------------------------------
+*/
+
+preserve
+center pred_brain22 pc1, inplace standardize
+regress pred_brain22 pc1, noconstant vce(bootstrap _b, nodots verbose reps(1000))
+restore
+
+/*
+Linear regression                               Number of obs     =         45
+                                                Replications      =      1,000
+                                                Wald chi2(1)      =      27.26
+                                                Prob > chi2       =     0.0000
+                                                R-squared         =     0.3548
+                                                Adj R-squared     =     0.3401
+                                                Root MSE          =     0.8033
+
+------------------------------------------------------------------------------
+             |   Observed   Bootstrap                         Normal-based
+pred_b~2 |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         pc1 |   .5940997   .1137981     5.22   0.000     .3710595    .8171398
+------------------------------------------------------------------------------
+*/
+
+permute pred_brain22 _b[pc1], verbose nodots reps(1000): regress pred_brain22 pc1
+/*
+Monte Carlo permutation results                 Number of obs     =         45
+
+      command:  regress pred_brain22 pc1
+        _pm_1:  _b[pc1]
+  permute var:  pred_brain22
+
+------------------------------------------------------------------------------
+T            |     T(obs)       c       n   p=c/n   SE(p) [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+       _pm_1 |   5.628884       0    1000  0.0000  0.0000         0   .0036821
+------------------------------------------------------------------------------
+Note: Confidence interval is with respect to p=c/n.
+Note: c = #{|T| >= |T(obs)|}
+*/
+
+
+
+
+
+**Eleven-week test-retest reliability
+
+***************
+***TEST-RETEST: LSAS-SR
+***************
+
+quietly bootstrap ICC = r(icc_i), reps(1000) nodots cluster(id) idcluster(newID): icc lsas newID time
+estat bootstrap, all
+
+/*
+Bootstrap results                               Number of obs     =         90
+                                                Replications      =       1000
+
+      command:  icc lsas newID time
+          ICC:  r(icc_i)
+
+                                     (Replications based on 45 clusters in id)
+------------------------------------------------------------------------------
+             |    Observed               Bootstrap
+             |       Coef.       Bias    Std. Err.  [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         ICC |   .83160823  -.0053116   .03883777    .7554876   .9077289   (N)
+             |                                       .7385016    .892518   (P)
+             |                                       .7493948   .8968043  (BC)
+------------------------------------------------------------------------------
+(N)    normal confidence interval
+(P)    percentile confidence interval
+(BC)   bias-corrected confidence interval
+*/
+
+
+***************
+***TEST-RETEST: Task SD-BOLD 160 sec
+***************
+
+quietly bootstrap ICC = r(icc_i), reps(1000) nodots cluster(id) idcluster(newID): icc Brain_cond_15_22 newID time
+estat bootstrap, all
+/*
+Bootstrap results                               Number of obs     =         90
+                                                Replications      =       1000
+
+      command:  icc Brain_cond_15_22 newID time
+          ICC:  r(icc_i)
+
+                                     (Replications based on 45 clusters in id)
+------------------------------------------------------------------------------
+             |    Observed               Bootstrap
+             |       Coef.       Bias    Std. Err.  [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         ICC |   .79632543  -.0057451   .05012565     .698081   .8945699   (N)
+             |                                       .6787484   .8712353   (P)
+             |                                       .6813371   .8712353  (BC)
+------------------------------------------------------------------------------
+(N)    normal confidence interval
+(P)    percentile confidence interval
+(BC)   bias-corrected confidence interval
+*/
+
+
+***************
+***TEST-RETEST: Task SD-BOLD 80 sec
+***************
+
+quietly bootstrap ICC = r(icc_i), reps(1000) nodots cluster(id) idcluster(newID): icc Brain_cond_16_23 newID time
+estat bootstrap, all
+
+/*
+Bootstrap results                               Number of obs     =         90
+                                                Replications      =       1000
+
+      command:  icc Brain_cond_16_23 newID time
+          ICC:  r(icc_i)
+
+                                     (Replications based on 45 clusters in id)
+------------------------------------------------------------------------------
+             |    Observed               Bootstrap
+             |       Coef.       Bias    Std. Err.  [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         ICC |   .77509369  -.0087132   .06018004     .657143   .8930444   (N)
+             |                                       .6374821   .8677466   (P)
+             |                                       .6469213    .869103  (BC)
+------------------------------------------------------------------------------
+(N)    normal confidence interval
+(P)    percentile confidence interval
+(BC)   bias-corrected confidence interval
+*/
+
+
+***************
+***TEST-RETEST: Task SD-BOLD 40 sec
+***************
+
+quietly bootstrap ICC = r(icc_i), reps(1000) nodots cluster(id) idcluster(newID): icc Brain_cond_17_24 newID time
+estat bootstrap, all
+
+/*
+Bootstrap results                               Number of obs     =         90
+                                                Replications      =       1000
+
+      command:  icc Brain_cond_17_24 newID time
+          ICC:  r(icc_i)
+
+                                     (Replications based on 45 clusters in id)
+------------------------------------------------------------------------------
+             |    Observed               Bootstrap
+             |       Coef.       Bias    Std. Err.  [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         ICC |    .6218333  -.0121176   .09276056     .440026   .8036407   (N)
+             |                                       .4122538   .7659971   (P)
+             |                                       .4239148   .7776126  (BC)
+------------------------------------------------------------------------------
+(N)    normal confidence interval
+(P)    percentile confidence interval
+(BC)   bias-corrected confidence interval
+*/
+
+
+***************
+***TEST-RETEST: Resting-state SD-BOLD 340 sec
+***************
+
+quietly bootstrap ICC = r(icc_i), reps(1000) nodots cluster(id) idcluster(newID): icc Brain_cond_18_25 newID time
+estat bootstrap, all
+
+/*
+Bootstrap results                               Number of obs     =         90
+                                                Replications      =       1000
+
+      command:  icc Brain_cond_18_25 newID time
+          ICC:  r(icc_i)
+
+                                     (Replications based on 45 clusters in id)
+------------------------------------------------------------------------------
+             |    Observed               Bootstrap
+             |       Coef.       Bias    Std. Err.  [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         ICC |   .81353025  -.0047367   .03630596    .7423719   .8846886   (N)
+             |                                       .7344151   .8720912   (P)
+             |                                        .741073   .8812515  (BC)
+------------------------------------------------------------------------------
+(N)    normal confidence interval
+(P)    percentile confidence interval
+(BC)   bias-corrected confidence interval
+*/
+
+
+***************
+***TEST-RETEST: Resting-state SD-BOLD 160 sec
+***************
+
+quietly bootstrap ICC = r(icc_i), reps(1000) nodots cluster(id) idcluster(newID): icc Brain_cond_19_26 newID time
+estat bootstrap, all
+
+/*
+Bootstrap results                               Number of obs     =         90
+                                                Replications      =       1000
+
+      command:  icc Brain_cond_19_26 newID time
+          ICC:  r(icc_i)
+
+                                     (Replications based on 45 clusters in id)
+------------------------------------------------------------------------------
+             |    Observed               Bootstrap
+             |       Coef.       Bias    Std. Err.  [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         ICC |   .67070619  -.0063769   .07492485    .5238562   .8175562   (N)
+             |                                       .5074762    .800541   (P)
+             |                                       .5193545   .8085421  (BC)
+------------------------------------------------------------------------------
+(N)    normal confidence interval
+(P)    percentile confidence interval
+(BC)   bias-corrected confidence interval
+*/
+
+
+***************
+***TEST-RETEST: Resting-state SD-BOLD 80 sec
+***************
+
+quietly bootstrap ICC = r(icc_i), reps(1000) nodots cluster(id) idcluster(newID): icc Brain_cond_20_27 newID time
+estat bootstrap, all
+
+/*
+Bootstrap results                               Number of obs     =         90
+                                                Replications      =       1000
+
+      command:  icc Brain_cond_20_27 newID time
+          ICC:  r(icc_i)
+
+                                     (Replications based on 45 clusters in id)
+------------------------------------------------------------------------------
+             |    Observed               Bootstrap
+             |       Coef.       Bias    Std. Err.  [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         ICC |   .55926227  -.0103059   .10410951    .3552114   .7633132   (N)
+             |                                       .3255585   .7419371   (P)
+             |                                       .3307158   .7451155  (BC)
+------------------------------------------------------------------------------
+(N)    normal confidence interval
+(P)    percentile confidence interval
+(BC)   bias-corrected confidence interval
+*/
+
+
+***************
+***TEST-RETEST: Resting-state SD-BOLD 40 sec
+***************
+
+quietly bootstrap ICC = r(icc_i), reps(1000) nodots cluster(id) idcluster(newID): icc Brain_cond_21_28 newID time
+estat bootstrap, all
+
+/*
+Bootstrap results                               Number of obs     =         90
+                                                Replications      =       1000
+
+      command:  icc Brain_cond_21_28 newID time
+          ICC:  r(icc_i)
+
+                                     (Replications based on 45 clusters in id)
+------------------------------------------------------------------------------
+             |    Observed               Bootstrap
+             |       Coef.       Bias    Std. Err.  [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         ICC |   .36186195  -.0088704    .1291187    .1087939     .61493   (N)
+             |                                       .1000517   .5874231   (P)
+             |                                       .1125887   .6019706  (BC)
+------------------------------------------------------------------------------
+(N)    normal confidence interval
+(P)    percentile confidence interval
+(BC)   bias-corrected confidence interval
+*/
+
+
+***************
+***TEST-RETEST: Task MEAN-BOLD 160 sec
+***************
+
+quietly bootstrap ICC = r(icc_i), reps(1000) nodots cluster(id) idcluster(newID): icc Brain_cond_1_8 newID time
+estat bootstrap, all
+
+/*
+Bootstrap results                               Number of obs     =         90
+                                                Replications      =       1000
+
+      command:  icc Brain_cond_1_8 newID time
+          ICC:  r(icc_i)
+
+                                     (Replications based on 45 clusters in id)
+------------------------------------------------------------------------------
+             |    Observed               Bootstrap
+             |       Coef.       Bias    Std. Err.  [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         ICC |  -.05114003   .0067851   .16766363   -.3797547   .2774747   (N)
+             |                                      -.3527313   .2942127   (P)
+             |                                      -.3533298   .2924212  (BC)
+------------------------------------------------------------------------------
+(N)    normal confidence interval
+(P)    percentile confidence interval
+(BC)   bias-corrected confidence interval
+*/
+
+
+***************
+***TEST-RETEST: Task MEAN-BOLD 80 sec
+***************
+
+quietly bootstrap ICC = r(icc_i), reps(1000) nodots cluster(id) idcluster(newID): icc Brain_cond_2_9 newID time
+estat bootstrap, all
+
+/*
+Bootstrap results                               Number of obs     =         90
+                                                Replications      =       1000
+
+      command:  icc Brain_cond_2_9 newID time
+          ICC:  r(icc_i)
+
+                                     (Replications based on 45 clusters in id)
+------------------------------------------------------------------------------
+             |    Observed               Bootstrap
+             |       Coef.       Bias    Std. Err.  [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         ICC |  -.11988634   .0052987   .12988167   -.3744497   .1346771   (N)
+             |                                      -.3631335    .134859   (P)
+             |                                       -.362474   .1356376  (BC)
+------------------------------------------------------------------------------
+(N)    normal confidence interval
+(P)    percentile confidence interval
+(BC)   bias-corrected confidence interval
+*/
+
+
+***************
+***TEST-RETEST: Task MEAN-BOLD 40 sec
+***************
+
+quietly bootstrap ICC = r(icc_i), reps(1000) nodots cluster(id) idcluster(newID): icc Brain_cond_3_10 newID time
+estat bootstrap, all
+
+/*
+Bootstrap results                               Number of obs     =         90
+                                                Replications      =       1000
+
+      command:  icc Brain_cond_3_10 newID time
+          ICC:  r(icc_i)
+
+                                     (Replications based on 45 clusters in id)
+------------------------------------------------------------------------------
+             |    Observed               Bootstrap
+             |       Coef.       Bias    Std. Err.  [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         ICC |  -.14784864   .0092671   .14566259   -.4333421   .1376448   (N)
+             |                                      -.3993696   .1528556   (P)
+             |                                      -.4000074   .1496027  (BC)
+------------------------------------------------------------------------------
+(N)    normal confidence interval
+(P)    percentile confidence interval
+(BC)   bias-corrected confidence interval
+*/

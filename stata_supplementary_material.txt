@@ -1,0 +1,873 @@
+*SUPPLEMENTARY MEHODS
+
+**Neuroimaging
+
+**************
+***SLEEPINESS: KSS (page 4)
+**************
+
+reshape long kss_pre, i(id) j(time)
+xtset id time
+
+xtgee kss_pre i.time, vce(bootstrap, reps(1000))
+
+/*
+GEE population-averaged model                   Number of obs     =         88
+Group variable:                         id      Number of groups  =         45
+Link:                             identity      Obs per group:
+Family:                           Gaussian                    min =          1
+Correlation:                  exchangeable                    avg =        2.0
+                                                              max =          2
+                                                Wald chi2(1)      =       0.39
+Scale parameter:                  2.698216      Prob > chi2       =     0.5298
+
+                                     (Replications based on 45 clusters in id)
+------------------------------------------------------------------------------
+             |   Observed   Bootstrap                         Normal-based
+     kss_pre |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+      9.time |   .1609047   .2560636     0.63   0.530    -.3409708    .6627802
+       _cons |   5.416873   .2421142    22.37   0.000     4.942338    5.891408
+------------------------------------------------------------------------------
+*/
+
+margins time
+
+/*
+Adjusted predictions                            Number of obs     =         88
+Model VCE    : Bootstrap
+
+Expression   : Linear prediction, predict()
+
+------------------------------------------------------------------------------
+             |            Delta-method
+             |     Margin   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+        time |
+          1  |   5.416873   .2421142    22.37   0.000     4.942338    5.891408
+          9  |   5.577778   .2505843    22.26   0.000     5.086642    6.068914
+------------------------------------------------------------------------------
+*/
+
+
+**Statistical modeling
+
+*********************
+***OUTLIER DETECTION: Mahalanobis distance (page 6)
+*********************
+
+mahascore lsas_del_post_b2 pred_baseline pred_brain8 pred_brain22 pred_brain25, gen(maha_horserace) refmeans compute
+
+*See also Figure S1
+
+
+***********************
+***SEPARATE PLS MODELS: Separate partial least squares analyses at the two baselines (page 12)
+***********************
+
+correlate pls_usc_cond15 pls_usc_masked22
+
+(obs=45)
+
+             | pls_u~15 pls~ed22
+-------------+------------------
+pls_usc_c~15 |   1.0000
+pls_usc_m~22 |   0.7651   1.0000
+
+*See also Figure S5A
+
+
+correlate lsas_del_b1 pls_usc_cond15
+
+(obs=45)
+
+             | lsas_d~1 pls_u~15
+-------------+------------------
+ lsas_del_b1 |   1.0000
+pls_usc_c~15 |   0.7410   1.0000
+
+*See also Figure S5B
+
+
+correlate lsas_del_b2 pls_usc_cond22
+
+(obs=45)
+
+             | lsas_d~2 pls~nd22
+-------------+------------------
+ lsas_del_b2 |   1.0000
+pls_usc_c~22 |   0.7546   1.0000
+
+*See also Figure S5C
+
+
+
+
+
+
+
+*SUPPLEMENTARY RESULTS
+
+**Main and secondary treatment outcomes
+
+reshape long sias sps spsq_sum madrss isi, i(id) j(time)
+xtset id time
+
+*********************
+***SECONDARY OUTCOME: SIAS (page 16)
+*********************
+
+xtgee sias i.time, vce(bootstrap, reps(1000))
+
+/*
+GEE population-averaged model                   Number of obs     =         90
+Group variable:                         id      Number of groups  =         45
+Link:                             identity      Obs per group:
+Family:                           Gaussian                    min =          2
+Correlation:                  exchangeable                    avg =        2.0
+                                                              max =          2
+                                                Wald chi2(1)      =     106.81
+Scale parameter:                  181.3891      Prob > chi2       =     0.0000
+
+                                     (Replications based on 45 clusters in id)
+------------------------------------------------------------------------------
+             |   Observed   Bootstrap                         Normal-based
+        sias |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     18.time |  -20.28889   1.963187   -10.33   0.000    -24.13667   -16.44111
+       _cons |   55.17778   1.978149    27.89   0.000     51.30068    59.05488
+------------------------------------------------------------------------------
+*/
+
+margins time
+
+/*
+Adjusted predictions                            Number of obs     =         90
+Model VCE    : Bootstrap
+
+Expression   : Linear prediction, predict()
+
+------------------------------------------------------------------------------
+             |            Delta-method
+             |     Margin   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+        time |
+          0  |   55.17778   1.978149    27.89   0.000     51.30068    59.05488
+         18  |   34.88889   1.926996    18.11   0.000     31.11205    38.66573
+------------------------------------------------------------------------------
+*/
+
+permute sias _b, verbose nodots reps(1000): xtgee sias i.time & time != 1 & time != 9
+
+/*
+Monte Carlo permutation results                 Number of obs     =         90
+
+      command:  xtgee sias i.time
+      0b.time:  _b[0b.time]
+      18.time:  _b[18.time]
+        _cons:  _b[_cons]
+  permute var:  sias
+
+------------------------------------------------------------------------------
+T            |     T(obs)       c       n   p=c/n   SE(p) [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+        time |
+          0  |  (empty)                                             
+         18  |  -20.28889       0    1000  0.0000  0.0000         0   .0036821
+             |
+       _cons |   55.17778       0    1000  0.0000  0.0000         0   .0036821
+------------------------------------------------------------------------------
+Note: Confidence intervals are with respect to p=c/n.
+Note: c = #{|T| >= |T(obs)|}
+*/
+
+
+*********************
+***SECONDARY OUTCOME: SPS (page 16)
+*********************
+
+xtgee sps i.time, vce(bootstrap, reps(1000))
+/*
+GEE population-averaged model                   Number of obs     =         90
+Group variable:                         id      Number of groups  =         45
+Link:                             identity      Obs per group:
+Family:                           Gaussian                    min =          2
+Correlation:                  exchangeable                    avg =        2.0
+                                                              max =          2
+                                                Wald chi2(1)      =     107.96
+Scale parameter:                  170.1101      Prob > chi2       =     0.0000
+
+                                     (Replications based on 45 clusters in id)
+------------------------------------------------------------------------------
+             |   Observed   Bootstrap                         Normal-based
+         sps |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     18.time |  -20.95556   2.016811   -10.39   0.000    -24.90843   -17.00268
+       _cons |   40.55556   2.130569    19.04   0.000     36.37972    44.73139
+------------------------------------------------------------------------------
+*/
+
+margins time
+
+/*
+Adjusted predictions                            Number of obs     =         90
+Model VCE    : Bootstrap
+
+Expression   : Linear prediction, predict()
+
+------------------------------------------------------------------------------
+             |            Delta-method
+             |     Margin   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+        time |
+          0  |   40.55556   2.130569    19.04   0.000     36.37972    44.73139
+         18  |       19.6    1.72661    11.35   0.000     16.21591    22.98409
+------------------------------------------------------------------------------
+*/
+
+permute sps _b, verbose nodots reps(1000): xtgee sps i.time & time != 1 & time != 9
+
+/*
+Monte Carlo permutation results                 Number of obs     =         90
+
+      command:  xtgee sps i.time
+      0b.time:  _b[0b.time]
+      18.time:  _b[18.time]
+        _cons:  _b[_cons]
+  permute var:  sps
+
+------------------------------------------------------------------------------
+T            |     T(obs)       c       n   p=c/n   SE(p) [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+        time |
+          0  |  (empty)                                             
+         18  |  -20.95555       0    1000  0.0000  0.0000         0   .0036821
+             |
+       _cons |   40.55556       0    1000  0.0000  0.0000         0   .0036821
+------------------------------------------------------------------------------
+Note: Confidence intervals are with respect to p=c/n.
+Note: c = #{|T| >= |T(obs)|}
+*/
+
+
+*********************
+***SECONDARY OUTCOME: SPSQ (page 16)
+*********************
+
+xtgee spsq_sum i.time, vce(bootstrap, reps(1000))
+
+/*
+GEE population-averaged model                   Number of obs     =         90
+Group variable:                         id      Number of groups  =         45
+Link:                             identity      Obs per group:
+Family:                           Gaussian                    min =          2
+Correlation:                  exchangeable                    avg =        2.0
+                                                              max =          2
+                                                Wald chi2(1)      =     132.20
+Scale parameter:                   76.7358      Prob > chi2       =     0.0000
+
+                                     (Replications based on 45 clusters in id)
+------------------------------------------------------------------------------
+             |   Observed   Bootstrap                         Normal-based
+    spsq_sum |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     18.time |  -16.46667   1.432144   -11.50   0.000    -19.27362   -13.65972
+       _cons |   34.08889   1.308539    26.05   0.000      31.5242    36.65358
+------------------------------------------------------------------------------
+*/
+
+margins time
+
+/*
+Adjusted predictions                            Number of obs     =         90
+Model VCE    : Bootstrap
+
+Expression   : Linear prediction, predict()
+
+------------------------------------------------------------------------------
+             |            Delta-method
+             |     Margin   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+        time |
+          0  |   34.08889   1.308539    26.05   0.000      31.5242    36.65358
+         18  |   17.62222   1.292831    13.63   0.000     15.08832    20.15613
+------------------------------------------------------------------------------
+*/
+
+permute spsq_sum _b, verbose nodots reps(1000): xtgee spsq_sum i.time & time != 1 & time != 9
+
+/*
+Monte Carlo permutation results                 Number of obs     =         90
+
+      command:  xtgee spsq_sum i.time
+      0b.time:  _b[0b.time]
+      18.time:  _b[18.time]
+        _cons:  _b[_cons]
+  permute var:  spsq_sum
+
+------------------------------------------------------------------------------
+T            |     T(obs)       c       n   p=c/n   SE(p) [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+        time |
+          0  |  (empty)                                             
+         18  |  -16.46667       0    1000  0.0000  0.0000         0   .0036821
+             |
+       _cons |   34.08889       0    1000  0.0000  0.0000         0   .0036821
+------------------------------------------------------------------------------
+Note: Confidence intervals are with respect to p=c/n.
+Note: c = #{|T| >= |T(obs)|}
+*/
+
+
+*********************
+***SECONDARY OUTCOME: ISI (page 16)
+*********************
+
+xtgee isi i.time, vce(bootstrap, reps(1000))
+
+/*
+GEE population-averaged model                   Number of obs     =         90
+Group variable:                         id      Number of groups  =         45
+Link:                             identity      Obs per group:
+Family:                           Gaussian                    min =          2
+Correlation:                  exchangeable                    avg =        2.0
+                                                              max =          2
+                                                Wald chi2(1)      =       9.07
+Scale parameter:                  27.76395      Prob > chi2       =     0.0026
+
+                                     (Replications based on 45 clusters in id)
+------------------------------------------------------------------------------
+             |   Observed   Bootstrap                         Normal-based
+         isi |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     18.time |  -2.244444   .7451036    -3.01   0.003    -3.704821   -.7840682
+       _cons |   9.222222   .8150593    11.31   0.000     7.624735    10.81971
+------------------------------------------------------------------------------
+*/
+
+margins time
+
+/*
+Adjusted predictions                            Number of obs     =         90
+Model VCE    : Bootstrap
+
+Expression   : Linear prediction, predict()
+
+------------------------------------------------------------------------------
+             |            Delta-method
+             |     Margin   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+        time |
+          1  |   9.222222   .8150593    11.31   0.000     7.624735    10.81971
+         18  |   6.977778   .7679073     9.09   0.000     5.472707    8.482848
+*/
+
+permute isi _b, verbose nodots reps(1000): xtgee isi i.time & time != 0 & time != 9
+
+/*
+Monte Carlo permutation results                 Number of obs     =         90
+
+      command:  xtgee isi i.time
+      1b.time:  _b[1b.time]
+      18.time:  _b[18.time]
+        _cons:  _b[_cons]
+  permute var:  isi
+
+------------------------------------------------------------------------------
+T            |     T(obs)       c       n   p=c/n   SE(p) [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+        time |
+          1  |  (empty)                                             
+         18  |  -2.244444      42    1000  0.0420  0.0063  .0304347   .0563503
+             |
+       _cons |   9.222222      22    1000  0.0220  0.0046  .0138374   .0331197
+------------------------------------------------------------------------------
+Note: Confidence intervals are with respect to p=c/n.
+Note: c = #{|T| >= |T(obs)|}
+*/
+
+
+*********************
+***SECONDARY OUTCOME: MADRS-S (page 16)
+*********************
+
+xtgee madrss i.time, vce(bootstrap, reps(1000))
+
+/*
+GEE population-averaged model                   Number of obs     =        180
+Group variable:                         id      Number of groups  =         45
+Link:                             identity      Obs per group:
+Family:                           Gaussian                    min =          4
+Correlation:                  exchangeable                    avg =        4.0
+                                                              max =          4
+                                                Wald chi2(3)      =      55.96
+Scale parameter:                  44.12815      Prob > chi2       =     0.0000
+
+                                     (Replications based on 45 clusters in id)
+------------------------------------------------------------------------------
+             |   Observed   Bootstrap                         Normal-based
+      madrss |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+        time |
+          1  |  -2.555556   .5174242    -4.94   0.000    -3.569688   -1.541423
+          9  |  -2.844444   .9054103    -3.14   0.002    -4.619016   -1.069873
+         18  |  -6.577778   .9197963    -7.15   0.000    -8.380545    -4.77501
+             |
+       _cons |   15.62222   .8234699    18.97   0.000     14.00825    17.23619
+------------------------------------------------------------------------------
+*/
+
+margins time
+
+/*
+Adjusted predictions                            Number of obs     =        180
+Model VCE    : Bootstrap
+
+Expression   : Linear prediction, predict()
+
+------------------------------------------------------------------------------
+             |            Delta-method
+             |     Margin   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+        time |
+          0  |   15.62222   .8234699    18.97   0.000     14.00825    17.23619
+          1  |   13.06667   .9644897    13.55   0.000      11.1763    14.95703
+          9  |   12.77778   1.094891    11.67   0.000     10.63183    14.92373
+         18  |   9.044444   1.150426     7.86   0.000     6.789651    11.29924
+------------------------------------------------------------------------------
+*/
+
+permute madrss _b, verbose nodots reps(1000): xtgee madrss i.time
+
+/*
+Monte Carlo permutation results                 Number of obs     =        180
+
+      command:  xtgee madrss i.time
+      0b.time:  _b[0b.time]
+       1.time:  _b[1.time]
+       9.time:  _b[9.time]
+      18.time:  _b[18.time]
+        _cons:  _b[_cons]
+  permute var:  madrss
+
+------------------------------------------------------------------------------
+T            |     T(obs)       c       n   p=c/n   SE(p) [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+        time |
+          0  |  (empty)                                             
+          1  |  -2.555556      87    1000  0.0870  0.0089  .0702685   .1062079
+          9  |  -2.844445      60    1000  0.0600  0.0075   .046095   .0765605
+         18  |  -6.577778       0    1000  0.0000  0.0000         0   .0036821
+             |
+       _cons |   15.62222       2    1000  0.0020  0.0014  .0002423   .0072058
+------------------------------------------------------------------------------
+Note: Confidence intervals are with respect to p=c/n.
+Note: c = #{|T| >= |T(obs)|}
+*/
+
+
+
+
+
+**Treatment outcome predictions
+
+************
+***Table S7: See "reliability_prediction/Soc_Anx_PLSbased_pred_crossval.m" (page 20)
+************
+
+
+
+**************
+***DEPRESSION: See "reliability_prediction/Soc_Anx_PLSbased_pred_crossval.m" (page 21)
+**************
+
+
+
+************
+***INSOMNIA: See "reliability_prediction/Soc_Anx_PLSbased_pred_crossval.m" (page 21)
+************
+
+
+
+***************
+***CREDIBILITY (page 21)
+***************
+
+preserve
+center lsas_del_post_b2 credibility9, inplace standardize
+regress lsas_del_post_b2 credibility9, noconstant vce(bootstrap _b, nodots verbose reps(1000))
+restore
+/*
+Linear regression                               Number of obs     =         45
+                                                Replications      =      1,000
+                                                Wald chi2(1)      =       3.72
+                                                Prob > chi2       =     0.0537
+                                                R-squared         =     0.0734
+                                                Adj R-squared     =     0.0523
+                                                Root MSE          =     0.9626
+
+------------------------------------------------------------------------------
+             |   Observed   Bootstrap                         Normal-based
+lsas_del_p~2 |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+credibility9 |   -.270868    .140424    -1.93   0.054    -.5460939    .0043579
+------------------------------------------------------------------------------
+*/
+
+permute lsas_del_post_b2 _b[credibility9], verbose nodots reps(1000): regress lsas_del_post_b2 credibility9
+
+/*
+Monte Carlo permutation results                 Number of obs     =         45
+
+      command:  regress lsas_del_post_b2 credibility9
+        _pm_1:  _b[credibility9]
+  permute var:  lsas_del_post_b2
+
+------------------------------------------------------------------------------
+T            |     T(obs)       c       n   p=c/n   SE(p) [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+       _pm_1 |  -.7394916      79    1000  0.0790  0.0085  .0630412   .0974871
+------------------------------------------------------------------------------
+Note: Confidence interval is with respect to p=c/n.
+Note: c = #{|T| >= |T(obs)|}
+*/
+
+
+
+****************
+***DEMOGRAPHICS: Age, sex, education, marital status, or psychiatric comorbidity (yes/no) (page 21)
+****************
+
+preserve
+center lsas_del_post_b2 age, inplace standardize
+regress lsas_del_post_b2 age, noconstant vce(bootstrap _b, nodots verbose reps(1000))
+restore
+
+/*
+Linear regression                               Number of obs     =         45
+                                                Replications      =      1,000
+                                                Wald chi2(1)      =       0.91
+                                                Prob > chi2       =     0.3413
+                                                R-squared         =     0.0199
+                                                Adj R-squared     =    -0.0024
+                                                Root MSE          =     0.9900
+
+------------------------------------------------------------------------------
+             |   Observed   Bootstrap                         Normal-based
+lsas_del_p~2 |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         age |   .1410115   .1481959     0.95   0.341    -.1494471    .4314701
+------------------------------------------------------------------------------
+*/
+
+permute lsas_del_post_b2 _b[age], verbose nodots reps(1000): regress lsas_del_post_b2 age
+
+/*
+Monte Carlo permutation results                 Number of obs     =         45
+
+      command:  regress lsas_del_post_b2 age
+        _pm_1:  _b[age]
+  permute var:  lsas_del_post_b2
+
+------------------------------------------------------------------------------
+T            |     T(obs)       c       n   p=c/n   SE(p) [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+       _pm_1 |   .3823926     336    1000  0.3360  0.0149  .3067439   .3662254
+------------------------------------------------------------------------------
+Note: Confidence interval is with respect to p=c/n.
+Note: c = #{|T| >= |T(obs)|}
+*/
+
+
+
+preserve
+center lsas_del_post_b2 sex, inplace standardize
+regress lsas_del_post_b2 sex, noconstant vce(bootstrap _b, nodots verbose reps(1000))
+restore
+
+/*
+Linear regression                               Number of obs     =         45
+                                                Replications      =      1,000
+                                                Wald chi2(1)      =       0.39
+                                                Prob > chi2       =     0.5315
+                                                R-squared         =     0.0094
+                                                Adj R-squared     =    -0.0131
+                                                Root MSE          =     0.9953
+
+------------------------------------------------------------------------------
+             |   Observed   Bootstrap                         Normal-based
+lsas_del_p~2 |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         sex |   .0971194   .1552189     0.63   0.532     -.207104    .4013429
+------------------------------------------------------------------------------
+*/
+
+permute lsas_del_post_b2 _b[sex], verbose nodots reps(1000): regress lsas_del_post_b2 sex
+
+/*
+Monte Carlo permutation results                 Number of obs     =         45
+
+      command:  regress lsas_del_post_b2 sex
+        _pm_1:  _b[sex]
+  permute var:  lsas_del_post_b2
+
+------------------------------------------------------------------------------
+T            |     T(obs)       c       n   p=c/n   SE(p) [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+       _pm_1 |   4.504202     531    1000  0.5310  0.0158  .4995171   .5622999
+------------------------------------------------------------------------------
+Note: Confidence interval is with respect to p=c/n.
+Note: c = #{|T| >= |T(obs)|}
+*/
+
+
+preserve
+center lsas_del_post_b2 education, inplace standardize
+regress lsas_del_post_b2 education, noconstant vce(bootstrap _b, nodots verbose reps(1000))
+restore
+
+/*
+Linear regression                               Number of obs     =         45
+                                                Replications      =      1,000
+                                                Wald chi2(1)      =       0.30
+                                                Prob > chi2       =     0.5849
+                                                R-squared         =     0.0090
+                                                Adj R-squared     =    -0.0135
+                                                Root MSE          =     0.9955
+
+------------------------------------------------------------------------------
+             |   Observed   Bootstrap                         Normal-based
+lsas_del_p~2 |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   education |   .0949194   .1737523     0.55   0.585    -.2456289    .4354677
+------------------------------------------------------------------------------
+*/
+
+
+permute lsas_del_post_b2 _b[education], verbose nodots reps(1000): regress lsas_del_post_b2 education
+
+/*
+Monte Carlo permutation results                 Number of obs     =         45
+
+      command:  regress lsas_del_post_b2 education
+        _pm_1:  _b[education]
+  permute var:  lsas_del_post_b2
+
+------------------------------------------------------------------------------
+T            |     T(obs)       c       n   p=c/n   SE(p) [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+       _pm_1 |   1.665364     548    1000  0.5480  0.0157  .5165503   .5791664
+------------------------------------------------------------------------------
+Note: Confidence interval is with respect to p=c/n.
+Note: c = #{|T| >= |T(obs)|}
+*/
+
+
+preserve
+center lsas_del_post_b2 marital0, inplace standardize
+regress lsas_del_post_b2 marital0, noconstant vce(bootstrap _b, nodots verbose reps(1000))
+restore
+
+/*
+Linear regression                               Number of obs     =         45
+                                                Replications      =      1,000
+                                                Wald chi2(1)      =       0.00
+                                                Prob > chi2       =     0.9952
+                                                R-squared         =     0.0000
+                                                Adj R-squared     =    -0.0227
+                                                Root MSE          =     1.0000
+
+------------------------------------------------------------------------------
+             |   Observed   Bootstrap                         Normal-based
+lsas_del_p~2 |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+    marital0 |    .000942   .1563723     0.01   0.995     -.305542    .3074261
+------------------------------------------------------------------------------
+*/
+
+permute lsas_del_post_b2 _b[marital0], verbose nodots reps(1000): regress lsas_del_post_b2 marital0
+
+/*
+Monte Carlo permutation results                 Number of obs     =         45
+
+      command:  regress lsas_del_post_b2 marital0
+        _pm_1:  _b[marital0]
+  permute var:  lsas_del_post_b2
+
+------------------------------------------------------------------------------
+T            |     T(obs)       c       n   p=c/n   SE(p) [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+       _pm_1 |   .0080404     998    1000  0.9980  0.0014  .9927942   .9997577
+------------------------------------------------------------------------------
+Note: Confidence interval is with respect to p=c/n.
+Note: c = #{|T| >= |T(obs)|}
+*/
+
+
+preserve
+center lsas_del_post_b2 comorbidity_anytime, inplace standardize
+regress lsas_del_post_b2 comorbidity_anytime, noconstant vce(bootstrap _b, nodots verbose reps(1000))
+restore
+
+/*
+Linear regression                               Number of obs     =         45
+                                                Replications      =      1,000
+                                                Wald chi2(1)      =       0.77
+                                                Prob > chi2       =     0.3789
+                                                R-squared         =     0.0152
+                                                Adj R-squared     =    -0.0072
+                                                Root MSE          =     0.9924
+
+-------------------------------------------------------------------------------------
+                    |   Observed   Bootstrap                         Normal-based
+   lsas_del_post_b2 |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+--------------------+----------------------------------------------------------------
+comorbidity_anytime |  -.1230906   .1398806    -0.88   0.379    -.3972517    .1510704
+-------------------------------------------------------------------------------------
+*/
+
+
+permute lsas_del_post_b2 _b[comorbidity_anytime], verbose nodots reps(1000): regress lsas_del_post_b2 comorbidity_anytime
+
+/*
+Monte Carlo permutation results                 Number of obs     =         45
+
+      command:  regress lsas_del_post_b2 comorbidity_anytime
+        _pm_1:  _b[comorbidity_anytime]
+  permute var:  lsas_del_post_b2
+
+------------------------------------------------------------------------------
+T            |     T(obs)       c       n   p=c/n   SE(p) [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+       _pm_1 |      -5.57     388    1000  0.3880  0.0154  .3576654   .4189961
+------------------------------------------------------------------------------
+Note: Confidence interval is with respect to p=c/n.
+Note: c = #{|T| >= |T(obs)|}
+*/
+
+
+
+*********************************
+***MULTIPLE REGRESSION, TABLE S8: 1) Equal data volumes across brain SD-BOLD conditions (160 sec) (page 22)
+*********************************
+
+preserve
+center lsas_del_post_b2 pred_baseline pred_brain8 pred_brain22 pred_brain26, inplace standardize
+regress lsas_del_post_b2 pred_baseline pred_brain8 pred_brain22 pred_brain26, noconstant vce(bootstrap _b, nodots verbose reps(1000))
+restore
+
+/*
+Linear regression                               Number of obs     =         45
+                                                Replications      =      1,000
+                                                Wald chi2(4)      =      57.72
+                                                Prob > chi2       =     0.0000
+                                                R-squared         =     0.5782
+                                                Adj R-squared     =     0.5371
+                                                Root MSE          =     0.6522
+
+-----------------------------------------------------------------------------------
+                  |   Observed   Bootstrap                         Normal-based
+ lsas_del_post_b2 |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+pred_baseline |   .2205036   .1259642     1.75   0.080    -.0263817    .4673888
+  pred_brain8 |  -.0739039   .1239331    -0.60   0.551    -.3168083    .1690005
+ pred_brain22 |   .6125692   .1063508     5.76   0.000     .4041254     .821013
+ pred_brain26 |   .2625937   .1045171     2.51   0.012     .0577439    .4674435
+-----------------------------------------------------------------------------------
+*/
+
+permute lsas_del_post_b2 _b[pred_baseline] _b[pred_brain8] _b[pred_brain22] _b[pred_brain26], verbose nodots reps(1000): regress lsas_del_post_b2 pred_baseline pred_brain8 pred_brain22 pred_brain26
+
+/*
+Monte Carlo permutation results                 Number of obs     =         45
+
+      command:  regress lsas_del_post_b2 pred_baseline pred_brain8 pred_brain22 pred_brain26
+        _pm_1:  _b[pred_baseline]
+        _pm_2:  _b[pred_brain8]
+        _pm_3:  _b[pred_brain22]
+        _pm_4:  _b[pred_brain26]
+  permute var:  lsas_del_post_b2
+
+------------------------------------------------------------------------------
+T            |     T(obs)       c       n   p=c/n   SE(p) [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+       _pm_1 |   .4875469     186    1000  0.1860  0.0123   .162336   .2115284
+       _pm_2 |  -.8230718     621    1000  0.6210  0.0153  .5901106   .6511747
+       _pm_3 |   .9102257       0    1000  0.0000  0.0000         0   .0036821
+       _pm_4 |   .9056928      90    1000  0.0900  0.0090  .0729905   .1094666
+------------------------------------------------------------------------------
+Note: Confidence intervals are with respect to p=c/n.
+Note: c = #{|T| >= |T(obs)|}
+*/
+
+
+*********************************
+***MULTIPLE REGRESSION, TABLE S9: 2) Full data volumes across brain SD-BOLD conditions (SD-BOLD resting-state 340 sec; SD-BOLD task 160 sec; MEAN-BOLD task 160 sec) (page 22)
+*********************************
+
+preserve
+center lsas_del_post_b2 pred_baseline pred_brain8 pred_brain22 pred_brain25, inplace standardize
+regress lsas_del_post_b2 pred_baseline pred_brain8 pred_brain22 pred_brain25, noconstant vce(bootstrap _b, nodots verbose reps(1000))
+restore
+
+/*
+Linear regression                               Number of obs     =         45
+                                                Replications      =      1,000
+                                                Wald chi2(4)      =      55.40
+                                                Prob > chi2       =     0.0000
+                                                R-squared         =     0.6115
+                                                Adj R-squared     =     0.5736
+                                                Root MSE          =     0.6260
+
+-----------------------------------------------------------------------------------
+                  |   Observed   Bootstrap                         Normal-based
+ lsas_del_post_b2 |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+pred_baseline |   .2884556   .1093086     2.64   0.008     .0742148    .5026965
+  pred_brain8 |  -.0788998   .0998612    -0.79   0.429    -.2746241    .1168245
+ pred_brain22 |   .4070421   .1087447     3.74   0.000     .1939063    .6201779
+ pred_brain25 |   .3353532   .1225899     2.74   0.006     .0950815     .575625
+-----------------------------------------------------------------------------------
+*/
+
+permute lsas_del_post_b2 _b[pred_baseline] _b[pred_brain8] _b[pred_brain22] _b[pred_brain25], verbose nodots reps(1000): regress lsas_del_post_b2 pred_baseline pred_brain8 pred_brain22 pred_brain25
+
+/*
+Monte Carlo permutation results                 Number of obs     =         45
+
+      command:  regress lsas_del_post_b2 pred_baseline pred_brain8 pred_brain22 pred_brain25
+        _pm_1:  _b[pred_baseline]
+        _pm_2:  _b[pred_brain8]
+        _pm_3:  _b[pred_brain22]
+        _pm_4:  _b[pred_brain25]
+  permute var:  lsas_del_post_b2
+
+------------------------------------------------------------------------------
+T            |     T(obs)       c       n   p=c/n   SE(p) [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+       _pm_1 |   .6377932      71    1000  0.0710  0.0081  .0558646   .0887164
+       _pm_2 |  -.8787118     631    1000  0.6310  0.0153   .600242   .6609841
+       _pm_3 |     .60483      18    1000  0.0180  0.0042  .0107019    .028299
+       _pm_4 |   .5664055      39    1000  0.0390  0.0061  .0278771   .0529309
+------------------------------------------------------------------------------
+Note: Confidence intervals are with respect to p=c/n.
+Note: c = #{|T| >= |T(obs)|}
+*/
+
+
+**Task-based signal variability prediction specifically generalizes across secondary social anxiety measures
+
+********************************
+***PRINCIPAL COMPONENT ANALYSIS: SPS, SIAS, SPSQ, CGI-I (see output from main manuscript)
+********************************
+
+
+**Test-retest reliability
+
+************
+***Table S10: See "/reliability_prediction/Soc_Anx_testretest.m" (page 25)
+************
+
+************
+***Table S11: See "/reliability_prediction/Soc_Anx_testretest.m" (page 26)
+************
