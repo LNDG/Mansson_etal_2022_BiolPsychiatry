@@ -1,0 +1,175 @@
+
+%------------------------------------------------------------------------
+
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%  Result File Name Start  %
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%  Note: Result file must be listed first, and must follow the file
+%	 name format of xxxx_yyyyresult.mat, where xxxx stands for
+%	 "any result file name prefix" and yyyy stands for the name
+%	 of PLS module (either PET ERP fMRI BfMRI STRUCT or SmallFC).
+%	 File name is case sensitive on Unix or Linux computers.
+
+result_file	condition_1_behav_lsassr_delta_post_b1_BfMRIresult.mat
+
+	%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%  Result File Name End  %
+	%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%------------------------------------------------------------------------
+
+	%%%%%%%%%%%%%%%%%%%%%%%%%
+	%  Group Section Start  %
+	%%%%%%%%%%%%%%%%%%%%%%%%%
+
+group_files	1329_BfMRIsessiondata.mat 5322_BfMRIsessiondata.mat 3024_BfMRIsessiondata.mat 4950_BfMRIsessiondata.mat 6894_BfMRIsessiondata.mat 4064_BfMRIsessiondata.mat 4610_BfMRIsessiondata.mat 1897_BfMRIsessiondata.mat 5848_BfMRIsessiondata.mat 3969_BfMRIsessiondata.mat 1692_BfMRIsessiondata.mat 7587_BfMRIsessiondata.mat 5889_BfMRIsessiondata.mat 3792_BfMRIsessiondata.mat 7243_BfMRIsessiondata.mat 5316_BfMRIsessiondata.mat 2759_BfMRIsessiondata.mat 4611_BfMRIsessiondata.mat 1475_BfMRIsessiondata.mat 8255_BfMRIsessiondata.mat 4166_BfMRIsessiondata.mat 7906_BfMRIsessiondata.mat 2286_BfMRIsessiondata.mat 6692_BfMRIsessiondata.mat 4738_BfMRIsessiondata.mat 9560_BfMRIsessiondata.mat 8541_BfMRIsessiondata.mat 2267_BfMRIsessiondata.mat 1147_BfMRIsessiondata.mat 8963_BfMRIsessiondata.mat 5769_BfMRIsessiondata.mat 8775_BfMRIsessiondata.mat 4550_BfMRIsessiondata.mat 3088_BfMRIsessiondata.mat 9853_BfMRIsessiondata.mat 6055_BfMRIsessiondata.mat 7641_BfMRIsessiondata.mat 2031_BfMRIsessiondata.mat 9700_BfMRIsessiondata.mat 5711_BfMRIsessiondata.mat 2545_BfMRIsessiondata.mat 6051_BfMRIsessiondata.mat 7457_BfMRIsessiondata.mat 9466_BfMRIsessiondata.mat 1085_BfMRIsessiondata.mat
+
+	%%%%%%%%%%%%%%%%%%%%%%%
+	%  Group Section End  %
+	%%%%%%%%%%%%%%%%%%%%%%%
+
+%------------------------------------------------------------------------
+
+	%%%%%%%%%%%%%%%%%%%%%%%
+	%  PLS Section Start  %
+	%%%%%%%%%%%%%%%%%%%%%%%
+
+%  Notes:
+%    1. Mean-Centering PLS
+%    2. Non-Rotated Task PLS (please also fill out contrast data below)
+%    3. Regular Behav PLS (please also fill out behavior data & name below)
+%    4. Multiblock PLS (please also fill out behavior data & name below)
+%    5. Non-Rotated Behav PLS (please also fill out contrast data and
+%	behavior data & name below)
+%    6. Non-Rotated Multiblock PLS (please also fill out contrast data and
+%	behavior data & name below)
+
+pls		3		% PLS Option (between 1 to 6, see above notes)
+
+%  Mean-Centering Type:
+%    0. Remove group condition means from conditon means within each group
+%    1. Remove grand condition means from each group condition mean
+%    2. Remove grand mean over all subjects and conditions
+%    3. Remove all main effects by subtracting condition and group means
+
+mean_type	0		% Mean-Centering Type (between 0 to 3, see above)
+
+%  Correlation Mode:
+%    0. Pearson correlation
+%    2. covaraince
+%    4. cosine angle
+%    6. dot product
+
+cormode		0		% Correlation Mode (can be 0,2,4,6, see above)
+
+num_perm	1000		% Number of Permutation
+num_split	0		% Natasha Perm Split Half
+num_boot	1000		% Number of Bootstrap
+boot_type	strat		% Either strat or nonstrat bootstrap type
+clim		95		% Confidence Level for Behavior PLS
+save_data	0		% Set to 1 to save stacked datamat
+
+	%%%%%%%%%%%%%%%%%%%%%
+	%  PLS Section End  %
+	%%%%%%%%%%%%%%%%%%%%%
+
+%------------------------------------------------------------------------
+
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%  Condition Selection Start  %
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%  Notes: If you don't need to deselect conditions, just leave
+%  "selected_cond" and "selected_bcond" to be commented.
+
+%  First put k number of 1 after "selected_cond" keyword, where k is the
+%  number of conditions in sessiondata file. Then, replace with 0 for
+%  those conditions that you would like to deselect for any case except
+%  behavior block of multiblock PLS. e.g. If you have 3 conditions in
+%  sessiondata file, and you would like to deselect the 2nd condition,
+%  then you should enter 1 0 1 after selected_cond.
+%               1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28
+selected_cond	1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 
+
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%  Condition Selection End  %
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%------------------------------------------------------------------------
+
+	%%%%%%%%%%%%%%%%%%%%%%%%%
+	%  Behavior Data Start  %
+	%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%  Notes: only list selected conditions (selected_cond)
+
+behavior_data	46	%	1329
+behavior_data	38	%	5322
+behavior_data	47	%	3024
+behavior_data	5	%	4950
+behavior_data	60	%	6894
+behavior_data	79	%	4064
+behavior_data	1	%	4610
+behavior_data	63	%	1897
+behavior_data	14	%	5848
+behavior_data	91	%	3969
+behavior_data	79	%	1692
+behavior_data	30	%	7587
+behavior_data	54	%	5889
+behavior_data	43	%	3792
+behavior_data	22	%	7243
+behavior_data	22	%	5316
+behavior_data	90	%	2759
+behavior_data	50	%	4611
+behavior_data	32	%	1475
+behavior_data	16	%	8255
+behavior_data	76	%	4166
+behavior_data	52	%	7906
+behavior_data	81	%	2286
+behavior_data	47	%	6692
+behavior_data	84	%	4738
+behavior_data	98	%	9560
+behavior_data	97	%	8541
+behavior_data	38	%	2267
+behavior_data	71	%	1147
+behavior_data	41	%	8963
+behavior_data	5	%	5769
+behavior_data	16	%	8775
+behavior_data	84	%	4550
+behavior_data	20	%	3088
+behavior_data	76	%	9853
+behavior_data	70	%	6055
+behavior_data	56	%	7641
+behavior_data	68	%	2031
+behavior_data	19	%	9700
+behavior_data	24	%	5711
+behavior_data	2	%	2545
+behavior_data	73	%	6051
+behavior_data	65	%	7457
+behavior_data	61	%	9466
+behavior_data	98	%	1085
+
+
+% ... following above pattern for more groups
+
+	%%%%%%%%%%%%%%%%%%%%%%%
+	%  Behavior Data End  %
+	%%%%%%%%%%%%%%%%%%%%%%%
+
+%------------------------------------------------------------------------
+
+	%%%%%%%%%%%%%%%%%%%%%%%%%
+	%  Behavior Name Start  %
+	%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%  Numbers of Behavior Name should match the Behavior Data above
+
+behavior_name	lsassr_delta_post_b1 
+
+	%%%%%%%%%%%%%%%%%%%%%%%
+	%  Behavior Name End  %
+	%%%%%%%%%%%%%%%%%%%%%%%
+
+%------------------------------------------------------------------------
+

@@ -1,0 +1,209 @@
+%------------------------------------------------------------------------
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% General Section Start %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+prefix TEMPLATE % prefix for session file and datamat file
+brain_region 0 % threshold or file name for brain region
+across_run 1 % 1 for merge data across all run, 0 for within each run
+single_subj 0 % 1 for single subject analysis, 0 for normal analysis
+%------------------------------------------------------------------------
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Condition Section Start %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+cond_name faces_total_80tr_ses-01
+ref_scan_onset -10
+num_ref_scan 10
+
+cond_name face_1st_total_40tr_ses-01
+ref_scan_onset -10
+num_ref_scan 10
+
+cond_name face_first_20tr_ses-01
+ref_scan_onset -10
+num_ref_scan 10
+
+cond_name restingstate_total_170tr_ses-01
+ref_scan_onset 0
+num_ref_scan 1
+
+cond_name restingstate_first_80tr_ses-01
+ref_scan_onset 0
+num_ref_scan 1
+
+cond_name restingstate_first_40tr_ses-01
+ref_scan_onset 0
+num_ref_scan 1
+
+cond_name restingstate_first_20tr_ses-01
+ref_scan_onset 0
+num_ref_scan 1
+
+cond_name faces_total_80tr_ses-02
+ref_scan_onset -10
+num_ref_scan 10
+
+cond_name face_1st_total_40tr_ses-02
+ref_scan_onset -10
+num_ref_scan 10
+
+cond_name face_first_20tr_ses-02
+ref_scan_onset -10
+num_ref_scan 10
+
+cond_name restingstate_total_170tr_ses-02
+ref_scan_onset 0
+num_ref_scan 1
+
+cond_name restingstate_first_80tr_ses-02
+ref_scan_onset 0
+num_ref_scan 1
+
+cond_name restingstate_first_40tr_ses-02
+ref_scan_onset 0
+num_ref_scan 1
+
+cond_name restingstate_first_20tr_ses-02
+ref_scan_onset 0
+num_ref_scan 1
+
+%------------------------------------------------------------------------
+%%%%%%%%%%%%%%%%%%%%%%%
+% Run Section Start %
+%%%%%%%%%%%%%%%%%%%%%%%
+data_files /home/common/SocAnx/preproc/TEMPLATE/ses-01/func/task/FEAT.feat/TEMPLATE_FEAT_detrend_filt_denoised_3mm_GMmasked.nii
+
+block_onsets 10 70
+block_onsets 10
+block_onsets 10
+block_onsets -1
+block_onsets -1
+block_onsets -1
+block_onsets -1
+block_onsets -1 
+block_onsets -1
+block_onsets -1
+block_onsets -1
+block_onsets -1 
+block_onsets -1 
+block_onsets -1
+
+block_length 40 40
+block_length 40
+block_length 20
+block_length 0
+block_length 0
+block_length 0
+block_length 0
+block_length 0
+block_length 0
+block_length 0
+block_length 0
+block_length 0
+block_length 0
+block_length 0
+
+
+%% RS %%
+data_files /home/common/SocAnx/preproc/TEMPLATE/ses-01/func/RS/FEAT.feat/TEMPLATE_FEAT_detrend_filt_denoised_3mm_GMmasked.nii
+
+block_onsets -1
+block_onsets -1
+block_onsets -1
+block_onsets 0
+block_onsets 0
+block_onsets 0
+block_onsets 0
+block_onsets -1 
+block_onsets -1
+block_onsets -1
+block_onsets -1
+block_onsets -1 
+block_onsets -1
+block_onsets -1
+
+block_length 0
+block_length 0
+block_length 0
+block_length 170
+block_length 80
+block_length 40
+block_length 20
+block_length 0
+block_length 0
+block_length 0
+block_length 0
+block_length 0
+block_length 0
+block_length 0
+
+
+%%%%%%%%%%%%%%%%SES-02%%%%%%%%%%%%%%%
+
+data_files /home/common/SocAnx/preproc/TEMPLATE/ses-02/func/task/FEAT.feat/TEMPLATE_FEAT_detrend_filt_denoised_3mm_GMmasked.nii
+
+block_onsets -1 
+block_onsets -1
+block_onsets -1
+block_onsets -1
+block_onsets -1 
+block_onsets -1 
+block_onsets -1
+block_onsets 10 70
+block_onsets 10
+block_onsets 10
+block_onsets -1
+block_onsets -1
+block_onsets -1
+block_onsets -1
+
+block_length 0
+block_length 0
+block_length 0
+block_length 0
+block_length 0
+block_length 0
+block_length 0
+block_length 40 40
+block_length 40
+block_length 20
+block_length 0
+block_length 0
+block_length 0
+block_length 0
+
+
+
+%% RS %%
+data_files /home/common/SocAnx/preproc/TEMPLATE/ses-02/func/RS/FEAT.feat/TEMPLATE_FEAT_detrend_filt_denoised_3mm_GMmasked.nii
+
+block_onsets -1 
+block_onsets -1
+block_onsets -1
+block_onsets -1
+block_onsets -1 
+block_onsets -1
+block_onsets -1
+block_onsets -1
+block_onsets -1
+block_onsets -1
+block_onsets 0
+block_onsets 0
+block_onsets 0
+block_onsets 0
+
+block_length 0
+block_length 0
+block_length 0
+block_length 0
+block_length 0
+block_length 0
+block_length 0
+block_length 0
+block_length 0
+block_length 0
+block_length 170
+block_length 80
+block_length 40
+block_length 20
