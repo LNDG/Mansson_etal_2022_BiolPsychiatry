@@ -1,0 +1,106 @@
+************
+***FIGURE 1: Study design and experimental task
+************
+
+twoway ///
+(line tr_demean_face time_seconds if group == 1 & id == 5, legend(label(1 "Subject 1") label(2 "Subject 2") label(3 "Subject 3") label(4 "Median spline (across all subjects in the study)") size(medium) position(7) col(4))) ///
+(line tr_demean_face time_seconds if group == 1 & id == 40, plotregion(color(none))) ///
+(line tr_demean_face time_seconds if group == 1 & id == 43, xline(20 100 140 220, lcolor("248 199 44 %50") noex lpattern(solid) lwidth(0.2))) ///
+(mspline tr_demean_face time_seconds if group == 1, lpattern(dash) lwidth(0.5) lcolor(cranberry) connect(ascending) ///
+xlabel(0(40)240, labsize(medium)) ylabel(none) by(session) xsize(20) ysize(10) ///
+ytitle("fMRI signal", size(medium)) xtitle("Data volume (seconds)", size(medium)))
+
+>>Illustration created in Keynote (Apple, Inc.)
+
+
+
+************
+***FIGURE 2: A general overview of the analytic framework
+************
+
+>>Illustration created in Keynote (Apple, Inc.)
+
+
+
+************
+***FIGURE 3: Reductions in social anxiety symptoms and task-related brain signal variability as a predictor of treatment outcome
+************
+
+A)
+twoway ///
+(line lsassr time if id != 15, plotregion(color(none)) lpattern(solid) lwidth(0.25) lcolor("187 212 207") connect(ascending) xscale(titlegap(*10))) ///
+(mspline lsassr_avg time if id != 15, lwidth(0.6) lcolor("206 56 48") xlabel(0 "0" 1 "1" 9 "9" 18 "18", labsize(medium)) ylabel(5(25)110, labsize(medium)) connect(ascending)) ///
+(rspike lsassr_upper lsassr_lower time, vertical lwidth(medium) lcolor(black)) ///
+(scatter lsassr_avg time if id != 15, mcolor(black) msize(medium) msymbol(O)) ///
+, title("Reductions in social anxiety symptoms", size(large)) ytitle("LSAS-SR", size(large)) xtitle("Time (weeks)", size(large)) ///
+text(20 5 "Cohen's {it:d}{sub:(PRE-POST)} = 1.62", size(large)) ///
+xline(0, lcolor(black) lstyle(none)) yline(0, lcolor(black) lstyle(grid)) legend(off)
+
+B)
+twoway ///
+(lfit lsas_del_post_b2 pred_brain22, lwidth(0.6)) ///
+(scatter lsas_del_post_b2 pred_brain22, msize(large) mcolor("248 199 44 %50") msymbol(O) plotregion(color(none)) legend(off) xscale(titlegap(*10)) yscale(titlegap(*10))),  ///
+ylabel(-100(30)20, labsize(medium)) xlabel(-100(30)20, labsize(medium)) ///
+text(-75 -15 "{it:r} = .65", size(large)) ///
+title("Actual and predicted social anxiety change score", size(large)) ytitle("Actual change score", size(large)) xtitle("Task SD{subscript:BOLD} predicted change score", size(large)) ///
+xline(-100, lcolor(black) lstyle(none)) yline(-100, lcolor(black) lstyle(grid)) legend(off)
+
+C)
+>>See "/GitHub/PLS/output/spatial_maps/condition_15_behav_lsassr_delta_post_b1_BSR0_BfMRIbsr_lv1.img"
+
+
+
+************
+***FIGURE 4: Treatment outcome prediction accuracies and brain signal variability
+************
+
+A)
+twoway ///
+(bar mase condition2 if condition == 9, bcolor("37 42 34") barwidth(1)  text(0.45 0 "*") bargap(100) color(black) ylabel(0.3(0.05)0.7, format(%4.2f) labsize(medium)) xsize(7) xscale(titlegap(*10)) yscale(titlegap(*10)) /// 
+xlabel(0 "Multiple" 2 "160" 3 "80" 4 "40" 5 "340" 6 "160" 7 "80" 8 "40" 9 "160" 10 "80" 11 "40" 12 "B1" 13 "B2", labsize(medium)) plotregion(color(none))) ///
+(bar mase condition2 if condition == 1, bcolor("248 199 44") barwidth(0.7) text(0.55 2 "*" 0.55 3 "*" 0.55 4 "*")) ///
+(bar mase condition2 if condition == 3, bcolor("166 141 57") barwidth(0.7) text(0.58 5 "*")) ///
+(bar mase condition2 if condition == 2, bcolor("166 141 57 %40") barwidth(0.7)) ///
+(bar mase condition2 if condition == 4, bcolor("206 56 48") barwidth(0.5) text(0.60 13 "*")), ///
+title("Prediction errors across conditions and data volumes", size(large)) ytitle("MASE", size(large)) xtitle("Predictors and data volumes", size(large)) ///
+legend(label(1 "Multiple") label(2 "Task SD{subscript:BOLD}") label(3 "Rest SD{subscript:BOLD}") label(4 "Task MEAN{subscript:BOLD}") label(5 "LSAS-SR") label(6 "LSAS-SR") size(medium) position(7) col(5))
+
+B)
+twoway ///
+(lfit lsas_del_post_b2 pred_brain_multiple, lwidth(0.6)) ///
+(scatter lsas_del_post_b2 pred_brain_multiple, msize(large) mcolor("37 42 34 %70") msymbol(D) plotregion(color(none)) legend(off) xscale(titlegap(*10)) yscale(titlegap(*10))),  ///
+ylabel(-100(30)20, labsize(medium)) xlabel(-100(30)20, labsize(medium)) ///
+text(-75 -15 "{it:r} = .77", size(large)) ///
+title("Actual and predicted social anxiety change score", size(large)) ytitle("Actual change score", size(large)) xtitle("Predicted change score (Task + Rest SD{subscript:BOLD} + LSAS-SR)", size(large)) ///
+xline(-100, lcolor(black) lstyle(none)) yline(-100, lcolor(black) lstyle(grid)) legend(off)
+
+C)
+graph pie variance4, sort(sort1) over(level) legend(label(1 "Unknown") label(2 "Shared") label(3 "LSAS-SR") label(4 "Rest SD{subscript:BOLD}") label(5 "Task SD{subscript:BOLD}") size(medium) position(9) col(1)) angle(90) plotregion(color(white)) nocl pie(1, color("37 42 34 %100")) pie(2, color("130 154 115 %100")) pie(5,explode color("248 199 44 %100")) pie(4, color("166 141 57")) pie(3, color("229 67 48 %100")) ///
+plabel(_all percent, color(black) size(*4) format(%5.1f)) ///
+title("Unique and shared variance", size(large))
+
+D)
+>>See "/GitHub/PLS/output/spatial_maps/condition_15_behav_lsassr_delta_post_b1_BSR0_BfMRIbsr_lv1.img"
+
+E)
+>>See "/GitHub/PLS/output/spatial_maps/condition_18_behav_lsassr_delta_post_b1_BSR0_BfMRIbsr_lv1.img"
+
+F)
+>>This spatial map demonstrates overlapping clusters from Figure 4D and Figure 4E (see above files)
+
+
+
+************
+***FIGURE 5: Test-retest reliability
+************
+
+twoway ///
+(scatter icc_wbs time if condition == 4, mcolor("229 67 48") msymbol(O) msize(medlarge) plotregion(color(none)) xscale(titlegap(*10)) yscale(titlegap(*10)))  ///
+(scatter icc_wbs time if condition == 7, mcolor("96 175 206") msymbol(T) msize(medlarge) yline(0.29, lpattern(dash) lwidth(0.2) lcolor(black) noex))  ///
+(scatter icc_wbs time2 if condition == 8, mcolor("96 175 206") msymbol(D) msize(medlarge) yline(0.397, lpattern(dash) lwidth(0.2) lcolor(black) noex))  ///
+(line icc_wbs time if condition == 1, lwidth(1) lcolor("248 199 44")  ylabel(0(0.2)1, labsize(small) format(%2.1f)) xlabel(40 "40" 80 "80" 160 "160" 340 "340" 500 "~600", labsize(small) format(%3.0f))) ///
+(line icc_wbs time2 if condition == 3, lwidth(1) lcolor("166 141 57") yline(0, lpattern(dashed) lwidth(0.1) lcolor(black) noex))  ///
+(rspike icc_wbs_bc_up icc_wbs_bc_low time if condition != 8 & condition != 2 & condition != 3, vertical lwidth(medium) lcolor(black)) ///
+(rspike icc_wbs_bc_up icc_wbs_bc_low time2 if condition == 8 | condition == 3, vertical lwidth(medium) lcolor(black)) ///
+, xline(0, lcolor(black) lstyle(none)) yline(0, lcolor(black) lstyle(grid)) title("Test-retest reliability of prediction models", size(medium)) ytitle("ICC", size(medium)) xtitle("Data volume (seconds)", size(medium)) ///
+legend(label(4 "Task SD{subscript:BOLD}") label(5 "Rest SD{subscript:BOLD}") label(1 "LSAS-SR") label(2 "Noble et al., 2019") label(3 "Elliott et al., 2020") label(6 "95% CI") order(1 4 5 2 3 6) size(small) position(7) col(3))
