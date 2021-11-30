@@ -1,4 +1,4 @@
-# Mansson_etal_2021_BiolPsychiatry
+# Mansson_etal_2022_BiolPsychiatry
 In this repository you will find the code/scripts we used to produce results reported in "Moment-to-moment brain signal variability reliably predicts psychiatric treatment outcome" by Kristoffer N T Månsson, Leonhard Waschke, Amirhossain Manzouri, Tomas Furmark, Håkan Fischer and Douglas D Garrett [https://doi.org/10.1016/j.biopsych.2021.09.026]. You will also find detailed statistical output from all the results presented in the paper. Please reference this paper if you intend to reuse this code.
 
 Due to ethics constraints, we cannot at present make the raw patient data openly available. Please contact the first author (K.M.) to discuss potential routes to data access.
